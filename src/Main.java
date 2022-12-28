@@ -1,7 +1,14 @@
-
+import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("This is my change");
+        Scanner scan = new Scanner(System.in);
+        System.out.println("What is your name?");
+        String Mess = scan.next();
+        System.out.println("Hello " + Mess);
+        System.out.println("What is your favourite colour?");
+        String cAnswer = scan.next();
+        System.out.println(cAnswer + " is an awesome colour!");
+
     }
 }
