@@ -98,6 +98,7 @@ class Database {
         }
     }
 
+    //A method to verify the account by comparing numbers and pins
     Card verifyAccount(String enteredNumber, String enteredPIN) {
         for (Card card: CARDS) {
             if (card != null && card.getNUMBER().equals(enteredNumber) && card.getPIN().equals(enteredPIN)){
@@ -108,6 +109,7 @@ class Database {
     }
 }
 
+//The Card class stores the Number and pin for each customer account as an object
 class Card {
     static Random random = new Random();
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="46220ec4-7d2c-4c27-983d-22e8153b08f1" name="Changes" comment="Stage One Complete">
+    <list default="true" id="46220ec4-7d2c-4c27-983d-22e8153b08f1" name="Changes" comment="Stage One Comments">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/banking/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/banking/Main.java" afterDir="false" />
     </list>
@@ -80,7 +80,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672353499520</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Stage One Comments">
+      <created>1672376287386</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1672376287386</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -98,6 +105,7 @@
     <MESSAGE value="first commit" />
     <MESSAGE value="Sienna's game" />
     <MESSAGE value="Stage One Complete" />
-    <option name="LAST_COMMIT_MESSAGE" value="Stage One Complete" />
+    <MESSAGE value="Stage One Comments" />
+    <option name="LAST_COMMIT_MESSAGE" value="Stage One Comments" />
   </component>
 </project>
