@@ -119,27 +119,25 @@ class Card {
         this.balance = balance;
     }
 
+
+    //These are the get and generate functions for numbers and pins
     public String getNUMBER() {
         return Arrays.toString(NUMBER).replace("[", "").replace(", ", "").replace("]", "");
     }
-
     void generateNUMBER() {
         NUMBER[0] = 4;
         for (int i = 1; i < 16; i++) {
             NUMBER[i] = i < 6 ? 0 : random.nextInt(10);
         }
     }
-
     public String getPIN() {
         return Arrays.toString(PIN).replace("[", "").replace(", ", "").replace("]", "");
     }
-
     void generatePIN() {
         for (int i = 0; i < 4; i++) {
             PIN[i] = random.nextInt(10);
         }
     }
-
     public long getBalance() {
         return balance;
     }
