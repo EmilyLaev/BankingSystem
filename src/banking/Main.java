@@ -2,65 +2,58 @@ package banking;
 
 import java.util.*;
 
-class Main extends Display{
+class Main extends CustomerMenu {
     public static void main(String[] args) {
         launchMainMenu();
     }
 }
 
-class Display {
+class CustomerMenu extends CardsManagementSystem {
 
-    static Scanner scanner = new Scanner(System.in);
-    static Database database = new Database();
-    static Card customerCard;
+    private static Scanner scanner = new Scanner(System.in);
+    private static Card loginCard;
 
     static void launchMainMenu() {
         while (true) {
             System.out.println("\n1. Create an account\n2. Log into account\n0. Exit");
             switch (scanner.nextInt()) {
                 case 1:
-                    int i = database.getCustomerCounter();
-                    database.createAccount();
-                    System.out.printf("\nYour card has been created\nYour card number:\n%s\nYour card PIN:\n%s\n",
-                            database.getCARDS()[i].getNUMBER(), database.getCARDS()[i].getPIN());
+                    addCard(new Card());
+                    System.out.print(getLastAddCard().toString());
                     break;
                 case 2:
                     launchLoginMenu();
                     break;
                 case 0:
-                    System.out.println("Bye!");
+                    System.out.println("\nBye!");
                     return;
             }
         }
     }
 
     static void launchLoginMenu() {
-        if (customerCard == null) {
+        if (loginCard == null) {
             System.out.println("\nEnter your card number:");
             String enteredNumber = scanner.next();
             System.out.println("Enter your PIN:");
-            String enteredPIN = scanner.next();
-            customerCard = database.verifyAccount(enteredNumber, enteredPIN);
+            String enteredPin = scanner.next();
+
+            loginCard = getCard(enteredNumber, enteredPin);
         }
-        if (customerCard != null) {
-            System.out.println("You have successfully logged in!");
-            launchCustomerMenu();
-        } else {
-            System.out.println("Wrong card number or PIN!");
-        }
+        System.out.print(loginCard == null ? "\nWrong card number or PIN!\n" : "\nYou have successfully logged in!\n");
+        launchAccountMenu();
     }
 
-    static void launchCustomerMenu() {
-        while (true) {
-            System.out.println("1. Balance\n2. Log out\n0. Exit");
+    static void launchAccountMenu() {
+        while (loginCard != null) {
+            System.out.println("\n1. Balance\n2. Log out\n0. Exit");
             switch (scanner.nextInt()) {
                 case 1:
-                    System.out.printf("Balance: %d\n", customerCard.getBalance());
+                    System.out.printf("\nBalance: %d\n", loginCard.getBalance());
                     break;
                 case 2:
-                    System.out.println("You have successfully logged out!");
-                    customerCard = new Card(0);
-                    customerCard = null;
+                    System.out.println("\nYou have successfully logged out!");
+                    loginCard = null;
                     return;
                 case 0:
                     return;
@@ -69,78 +62,71 @@ class Display {
     }
 }
 
-class Database {
+class Card extends CardsManagementSystem {
 
-    private int customerCounter = 0;
-    private final Card[] CARDS = new Card[1000000];
+    private String number;
+    private String pin;
+    private long balance;
 
-    public int getCustomerCounter() {
-        return customerCounter;
+    Card() {
+        this.pin = String.valueOf(nextInt(9000) + 1000);
+        this.balance = 0;
     }
 
-    public Card[] getCARDS() {
-        return CARDS;
+    String getNumber() {
+        return this.number;
     }
 
-    void createAccount() {
-        CARDS[customerCounter] = new Card(0);
-        CARDS[customerCounter].generateNUMBER();
-        CARDS[customerCounter].generatePIN();
+    void setNumber() {
+        this.number = addChecksum(new StringBuilder("400000").append(nextInt(899999999) + 100000000));
+    }
 
-        for (int i = 0; i < CARDS.length; i++) {
-            if (CARDS[customerCounter].getNUMBER().equals(CARDS[i].getNUMBER()) && i != customerCounter && CARDS[i] != null) {
-                CARDS[customerCounter].generateNUMBER();
-                i = 0;
-            } else {
-                customerCounter++;
-                break;
-            }
+    String getPin() {
+        return this.pin;
+    }
+
+    long getBalance() {
+        return balance;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("\nYour card has been created\nYour card number:\n%s\nYour card PIN:\n%s\n",
+                this.number, this.pin);
+    }
+}
+
+class CardsManagementSystem extends Random {
+
+    private static final List<Card> CARDS = new ArrayList<>();
+
+    String addChecksum(StringBuilder numberWithoutChecksum) {
+        int checksum = 0;
+        for (int i = 0; i < numberWithoutChecksum.length(); i++) {
+            int digit = Integer.parseInt(String.valueOf(numberWithoutChecksum.charAt(i)));
+            digit = i % 2 == 0 ? digit * 2 : digit;
+            checksum += digit > 9 ? digit - 9 : digit;
         }
+        return String.valueOf(numberWithoutChecksum.append((checksum * 10 - checksum % 10) % 10));
     }
 
-    //A method to verify the account by comparing numbers and pins
-    Card verifyAccount(String enteredNumber, String enteredPIN) {
+    static Card getCard(String enteredNumber, String enteredPin) {
         for (Card card: CARDS) {
-            if (card != null && card.getNUMBER().equals(enteredNumber) && card.getPIN().equals(enteredPIN)){
+            if (card.getNumber().equals(enteredNumber) && card.getPin().equals(enteredPin)) {
                 return card;
             }
         }
         return null;
     }
-}
 
-//The Card class stores the Number and pin for each customer account as an object
-class Card {
-    static Random random = new Random();
-
-    private final int[] NUMBER = new int[16];
-    private final int[] PIN = new int[4];
-    private long balance;
-
-    Card(long balance) {
-        this.balance = balance;
+    static Card getLastAddCard() {
+        return CARDS.get(CARDS.toArray().length - 1);
     }
 
-
-    //These are the get and generate functions for numbers and pins
-    public String getNUMBER() {
-        return Arrays.toString(NUMBER).replace("[", "").replace(", ", "").replace("]", "");
-    }
-    void generateNUMBER() {
-        NUMBER[0] = 4;
-        for (int i = 1; i < 16; i++) {
-            NUMBER[i] = i < 6 ? 0 : random.nextInt(10);
-        }
-    }
-    public String getPIN() {
-        return Arrays.toString(PIN).replace("[", "").replace(", ", "").replace("]", "");
-    }
-    void generatePIN() {
-        for (int i = 0; i < 4; i++) {
-            PIN[i] = random.nextInt(10);
-        }
-    }
-    public long getBalance() {
-        return balance;
+    static void addCard(Card newCard) {
+        do {
+            newCard.setNumber();
+        } while (CARDS.stream().anyMatch(card -> card.getNumber().equals(newCard.getNumber())));
+        CARDS.add(newCard);
     }
 }
