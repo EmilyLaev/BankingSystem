@@ -2,6 +2,7 @@ package banking;
 
 import java.util.*;
 
+//The main running of the project (written in terms of an extended class)
 class Main extends CustomerMenu {
     public static void main(String[] args) {
         launchMainMenu();
@@ -72,7 +73,7 @@ class Card extends CardsManagementSystem {
         this.pin = String.valueOf(nextInt(9000) + 1000);
         this.balance = 0;
     }
-
+//The main get and set methods for the numbers and pins
     String getNumber() {
         return this.number;
     }
@@ -89,6 +90,7 @@ class Card extends CardsManagementSystem {
         return balance;
     }
 
+    //A method to override the toString method with no arguments
     @Override
     public String toString() {
         return String.format("\nYour card has been created\nYour card number:\n%s\nYour card PIN:\n%s\n",
@@ -100,6 +102,7 @@ class CardsManagementSystem extends Random {
 
     private static final List<Card> CARDS = new ArrayList<>();
 
+    //a method to deposit money to
     String addChecksum(StringBuilder numberWithoutChecksum) {
         int checksum = 0;
         for (int i = 0; i < numberWithoutChecksum.length(); i++) {
