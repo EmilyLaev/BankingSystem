@@ -14,6 +14,8 @@ class CustomerMenu extends CardsManagementSystem {
     private static Scanner scanner = new Scanner(System.in);
     private static Card loginCard;
 
+    //a method to launch the main menu seen by the user
+    //when user inputs a value the appropriate responses are enacted
     static void launchMainMenu() {
         while (true) {
             System.out.println("\n1. Create an account\n2. Log into account\n0. Exit");
