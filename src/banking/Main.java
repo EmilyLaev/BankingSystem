@@ -34,6 +34,7 @@ class CustomerMenu extends CardsManagementSystem {
         }
     }
 
+    // A method for the login menu where the user can enter their card number and PIN
     static void launchLoginMenu() {
         if (loginCard == null) {
             System.out.println("\nEnter your card number:");
@@ -47,6 +48,7 @@ class CustomerMenu extends CardsManagementSystem {
         launchAccountMenu();
     }
 
+    // A method for the main menu seen by the user when they are logged in
     static void launchAccountMenu() {
         while (loginCard != null) {
             System.out.println("\n1. Balance\n2. Log out\n0. Exit");
@@ -71,23 +73,22 @@ class Card extends CardsManagementSystem {
     private String pin;
     private long balance;
 
+    // Constructor for creating a new card with a random PIN and a balance of 0
     Card() {
         this.pin = String.valueOf(nextInt(9000) + 1000);
         this.balance = 0;
     }
-//The main get and set methods for the numbers and pins
+    
+    //The main get and set methods for the numbers and pins
     String getNumber() {
         return this.number;
     }
-
     void setNumber() {
         this.number = addChecksum(new StringBuilder("400000").append(nextInt(899999999) + 100000000));
     }
-
     String getPin() {
         return this.pin;
     }
-
     long getBalance() {
         return balance;
     }
@@ -104,7 +105,7 @@ class CardsManagementSystem extends Random {
 
     private static final List<Card> CARDS = new ArrayList<>();
 
-    //a method to deposit money to
+    // A method for adding a checksum to a card number
     String addChecksum(StringBuilder numberWithoutChecksum) {
         int checksum = 0;
         for (int i = 0; i < numberWithoutChecksum.length(); i++) {
@@ -115,6 +116,7 @@ class CardsManagementSystem extends Random {
         return String.valueOf(numberWithoutChecksum.append((checksum * 10 - checksum % 10) % 10));
     }
 
+    // A method for getting a card with a given card number and PIN
     static Card getCard(String enteredNumber, String enteredPin) {
         for (Card card: CARDS) {
             if (card.getNumber().equals(enteredNumber) && card.getPin().equals(enteredPin)) {
@@ -124,10 +126,12 @@ class CardsManagementSystem extends Random {
         return null;
     }
 
+    // A method for getting the last added card
     static Card getLastAddCard() {
         return CARDS.get(CARDS.toArray().length - 1);
     }
 
+    // A method for adding a new card to the system
     static void addCard(Card newCard) {
         do {
             newCard.setNumber();
